@@ -1,6 +1,6 @@
 var API = (function () {
-  const BASE_URL = 'http://localhost:7001';
-  const TOKEN_KEY = 'token';
+  const BASE_URL = "http://study.duyiedu.com";
+  const TOKEN_KEY = "token";
 
   function get(path) {
     const headers = {};
@@ -13,7 +13,7 @@ var API = (function () {
 
   function post(path, bodyObj) {
     const headers = {
-      'Content-Type': 'application/json',
+      "content-type": "application/json",
     };
     const token = localStorage.getItem(TOKEN_KEY);
     if (token) {
@@ -21,47 +21,46 @@ var API = (function () {
     }
     return fetch(BASE_URL + path, {
       headers,
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(bodyObj),
     });
   }
 
   async function reg(userInfo) {
-    const resp = await post('/api/user/reg', userInfo);
+    const resp = await post("/api/user/reg", userInfo);
     return await resp.json();
   }
 
   async function login(loginInfo) {
-    const resp = await post('/api/user/login', loginInfo);
+    const resp = await post("/api/user/login", loginInfo);
     const result = await resp.json();
     if (result.code === 0) {
-      // 登录成功
-      // 将响应头中的token保存起来（localStorage）
-      const token = resp.headers.get('authorization');
+      // 将响应头中的 token 保存起来（localStorage）
+      const token = resp.headers.get("authorization");
       localStorage.setItem(TOKEN_KEY, token);
     }
     return result;
   }
 
   async function exists(loginId) {
-    const resp = await get('/api/user/exists?loginId=' + loginId);
+    const resp = await get("/api/user/exists?loginId=" + loginId);
     return await resp.json();
   }
 
   async function profile() {
-    const resp = await get('/api/user/profile');
+    const resp = await get("/api/user/profile");
     return await resp.json();
   }
 
   async function sendChat(content) {
-    const resp = await post('/api/chat', {
+    const resp = await post("/api/chat", {
       content,
     });
     return await resp.json();
   }
 
   async function getHistory() {
-    const resp = await get('/api/chat/history');
+    const resp = await get("/api/chat/history");
     return await resp.json();
   }
 
